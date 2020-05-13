@@ -2,11 +2,12 @@ package no.madsopheim.urlredirecter;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
 import java.net.URI;
 
-public class Main {
+public class Redirecter implements HttpHandler {
 
     void moved(HttpExchange httpExchange) throws IOException {
         Headers responseHeaders = httpExchange.getResponseHeaders();
@@ -18,6 +19,14 @@ public class Main {
     }
 
     String getLocation(URI uri) {
-        return uri.toString().replace("https://slack-redir.net/link?url=", "");
+        String replaceSlackRedirect = uri.toString().replace("https://slack-redir.net/link?url=", "");
+        String removeFacebookId = replaceSlackRedirect.split("/?fblcid=")[0];
+        System.out.println(removeFacebookId);
+        return removeFacebookId;
+    }
+
+    @Override
+    public void handle(HttpExchange httpExchange) throws IOException {
+        moved(httpExchange);
     }
 }

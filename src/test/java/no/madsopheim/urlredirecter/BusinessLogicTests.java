@@ -19,20 +19,20 @@ public class BusinessLogicTests {
     @Test
     public void canMove() throws IOException {
         HttpExchange httpExchange = createHttpExchange();
-        new Main().moved(httpExchange);
+        new Redirecter().moved(httpExchange);
     }
 
     @Test
     public void removesSlackPath() {
         URI uri = URI.create("https://slack-redir.net/link?url=http://www.google.com");
-        String location = new Main().getLocation(uri);
+        String location = new Redirecter().getLocation(uri);
         assertEquals(location, "http://www.google.com");
     }
 
     @Test
     public void doesNothingWithNormalPath() {
         URI uri = URI.create("http://www.google.com");
-        String location = new Main().getLocation(uri);
+        String location = new Redirecter().getLocation(uri);
         assertEquals(location, "http://www.google.com");
 
     }
